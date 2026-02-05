@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advisory List - CVSS Score Mockup</title>
+    <!-- PatternFly CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/@patternfly/patternfly@5.0.0/patternfly.min.css">
+    <style>
+        body {
+            background-color: var(--pf-v5-global--BackgroundColor--200);
+            padding: 24px;
+        }
+        .mockup-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .mockup-title {
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--pf-v5-global--BorderColor--100);
+        }
+        .mockup-section {
+            background: white;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        /* Severity colors */
+        .severity-critical { color: #C9190B; }
+        .severity-high { color: #EC7A08; }
+        .severity-medium { color: #F0AB00; }
+        .severity-low { color: #0066CC; }
+        .severity-none { color: #3E8635; }
+
+        /* Vulnerability gallery */
+        .vuln-gallery {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .vuln-count {
+            font-weight: 600;
+            font-size: 16px;
+            color: #151515;
+        }
+        .vuln-breakdown {
+            display: flex;
+            gap: 8px;
+        }
+        .vuln-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .vuln-chip.critical {
+            background: #FAEAE8;
+            color: #C9190B;
+        }
+        .vuln-chip.high {
+            background: #FDF7E7;
+            color: #EC7A08;
+        }
+        .vuln-chip.medium {
+            background: #FFF8E5;
+            color: #F0AB00;
+        }
+        .vuln-chip.low {
+            background: #E7F1FA;
+            color: #0066CC;
+        }
+
+        /* Source label */
+        .source-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            background: #F0F0F0;
+            color: #6A6E73;
+        }
+        .source-label.redhat {
+            background: #FAEAE8;
+            color: #C9190B;
+        }
+        .source-label.cve {
+            background: #E7F1FA;
+            color: #0066CC;
+        }
+        .source-label.ghsa {
+            background: #F0F0F0;
+            color: #151515;
+        }
+
+        .design-note {
+            background: #E7F1FA;
+            border-left: 4px solid #0066CC;
+            padding: 12px 16px;
+            margin-top: 16px;
+            font-size: 14px;
+        }
+
+        /* Stats cards */
+        .stats-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .stat-card {
+            flex: 1;
+            padding: 16px;
+            background: #FAFAFA;
+            border-radius: 6px;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #151515;
+        }
+        .stat-label {
+            font-size: 13px;
+            color: #6A6E73;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="mockup-container">
+        <div class="mockup-title">
+            <h1>Advisory List - Mockup</h1>
+            <p class="pf-v5-u-color-200">Showing advisories with vulnerability count and severity breakdown</p>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="mockup-section">
+            <h2 class="pf-v5-c-title pf-m-lg" style="margin-bottom: 16px;">Advisories Overview</h2>
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div class="stat-value">66</div>
+                    <div class="stat-label">Total Advisories</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">31</div>
+                    <div class="stat-label">Red Hat</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">25</div>
+                    <div class="stat-label">CVE Records</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">10</div>
+                    <div class="stat-label">GitHub</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Advisory Table -->
+        <div class="mockup-section">
+            <h2 class="pf-v5-c-title pf-m-lg" style="margin-bottom: 16px;">Advisories</h2>
+
+            <!-- Filters -->
+            <div style="display: flex; gap: 16px; margin-bottom: 16px;">
+                <input type="text" class="pf-v5-c-form-control" placeholder="Search advisories..." style="width: 300px;">
+                <select class="pf-v5-c-form-control" style="width: 150px;">
+                    <option>All Sources</option>
+                    <option>Red Hat</option>
+                    <option>CVE Record</option>
+                    <option>GitHub</option>
+                </select>
+            </div>
+
+            <table class="pf-v5-c-table pf-m-grid-md" role="grid">
+                <thead class="pf-v5-c-table__thead">
+                    <tr class="pf-v5-c-table__tr" role="row">
+                        <th class="pf-v5-c-table__th" role="columnheader">Identifier</th>
+                        <th class="pf-v5-c-table__th" role="columnheader">Title</th>
+                        <th class="pf-v5-c-table__th" role="columnheader">Source</th>
+                        <th class="pf-v5-c-table__th" role="columnheader">Vulnerabilities</th>
+                        <th class="pf-v5-c-table__th" role="columnheader">Modified</th>
+                    </tr>
+                </thead>
+                <tbody class="pf-v5-c-table__tbody">
+                    <!-- Red Hat CSAF Advisory -->
+                    <tr class="pf-v5-c-table__tr" role="row">
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <a href="#" style="font-weight: 600;">RHSA-2024:1234</a>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            Red Hat build of Quarkus 3.2.9 security update
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <span class="source-label redhat">Red Hat</span>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <div class="vuln-gallery">
+                                <span class="vuln-count">12</span>
+                                <div class="vuln-breakdown">
+                                    <span class="vuln-chip critical">2</span>
+                                    <span class="vuln-chip high">5</span>
+                                    <span class="vuln-chip medium">4</span>
+                                    <span class="vuln-chip low">1</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">Mar 15, 2024</td>
+                    </tr>
+
+                    <!-- Red Hat Important -->
+                    <tr class="pf-v5-c-table__tr" role="row">
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <a href="#" style="font-weight: 600;">RHSA-2024:0987</a>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            Red Hat AMQ Streams 2.5.0 security update
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <span class="source-label redhat">Red Hat</span>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <div class="vuln-gallery">
+                                <span class="vuln-count">8</span>
+                                <div class="vuln-breakdown">
+                                    <span class="vuln-chip high">3</span>
+                                    <span class="vuln-chip medium">5</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">Feb 28, 2024</td>
+                    </tr>
+
+                    <!-- CVE Record -->
+                    <tr class="pf-v5-c-table__tr" role="row">
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <a href="#" style="font-weight: 600;">CVE-2023-1436</a>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            Infinite loop in Jettison JSON parser
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <span class="source-label cve">CVE Record</span>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <div class="vuln-gallery">
+                                <span class="vuln-count">1</span>
+                                <div class="vuln-breakdown">
+                                    <span class="vuln-chip medium">1</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">Mar 22, 2023</td>
+                    </tr>
+
+                    <!-- GitHub Advisory -->
+                    <tr class="pf-v5-c-table__tr" role="row">
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <a href="#" style="font-weight: 600;">GHSA-x84v-xcm2-53pg</a>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            Apache Commons Text variable interpolation RCE
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <span class="source-label ghsa">GitHub</span>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <div class="vuln-gallery">
+                                <span class="vuln-count">1</span>
+                                <div class="vuln-breakdown">
+                                    <span class="vuln-chip critical">1</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">Jan 10, 2024</td>
+                    </tr>
+
+                    <!-- Medium severity -->
+                    <tr class="pf-v5-c-table__tr" role="row">
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <a href="#" style="font-weight: 600;">CVE-2023-2976</a>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            Guava temporary directory creation vulnerability
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <span class="source-label cve">CVE Record</span>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <div class="vuln-gallery">
+                                <span class="vuln-count">1</span>
+                                <div class="vuln-breakdown">
+                                    <span class="vuln-chip medium">1</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">Jun 14, 2023</td>
+                    </tr>
+
+                    <!-- Low severity -->
+                    <tr class="pf-v5-c-table__tr" role="row">
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <a href="#" style="font-weight: 600;">CVE-2023-0482</a>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            RESTEasy temporary file information disclosure
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <span class="source-label cve">CVE Record</span>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <div class="vuln-gallery">
+                                <span class="vuln-count">1</span>
+                                <div class="vuln-breakdown">
+                                    <span class="vuln-chip low">1</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">Feb 17, 2023</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="design-note">
+                <strong>Design Notes:</strong>
+                <ul>
+                    <li><strong>Vulnerability Gallery</strong> - Shows total count + breakdown by CVSS severity using colored chips</li>
+                    <li><strong>Source Label</strong> - Indicates where the advisory came from (Red Hat, CVE, GitHub, etc.)</li>
+                    <li><strong>CSAF advisories</strong> (Red Hat, etc.) typically have multiple vulnerabilities</li>
+                    <li><strong>CVE/OSV advisories</strong> typically describe a single vulnerability</li>
+                    <li>Severity chips are derived from CVSS scores of each vulnerability</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Severity Legend -->
+        <div class="mockup-section">
+            <h2 class="pf-v5-c-title pf-m-lg" style="margin-bottom: 16px;">Vulnerability Severity Legend</h2>
+            <p style="color: #6A6E73; margin-bottom: 16px;">
+                Severity is derived from CVSS scores of individual vulnerabilities within each advisory.
+            </p>
+            <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                <span class="vuln-chip critical">Critical (9.0-10.0)</span>
+                <span class="vuln-chip high">High (7.0-8.9)</span>
+                <span class="vuln-chip medium">Medium (4.0-6.9)</span>
+                <span class="vuln-chip low">Low (0.1-3.9)</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

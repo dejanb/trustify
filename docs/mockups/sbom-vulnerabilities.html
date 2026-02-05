@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SBOM Vulnerabilities - Multi-Score Display Mockup</title>
+    <!-- PatternFly CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/@patternfly/patternfly@5.0.0/patternfly.min.css">
+    <style>
+        body {
+            background-color: var(--pf-v5-global--BackgroundColor--200);
+            padding: 24px;
+        }
+        .mockup-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .mockup-title {
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--pf-v5-global--BorderColor--100);
+        }
+        .mockup-section {
+            background: white;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        /* Severity colors */
+        .severity-critical { color: #C9190B; }
+        .severity-high { color: #EC7A08; }
+        .severity-medium { color: #F0AB00; }
+        .severity-low { color: #0066CC; }
+
+        /* Score pills */
+        .score-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 16px;
+            font-size: 13px;
+            font-weight: 500;
+            margin: 2px 4px 2px 0;
+        }
+        .score-pill.critical {
+            background: #FAEAE8;
+            color: #C9190B;
+        }
+        .score-pill.high {
+            background: #FDF7E7;
+            color: #EC7A08;
+        }
+        .score-pill.medium {
+            background: #FFF8E5;
+            color: #F0AB00;
+        }
+        .score-pill.low {
+            background: #E7F1FA;
+            color: #0066CC;
+        }
+
+        .score-source {
+            font-size: 11px;
+            color: #6A6E73;
+            margin-left: 2px;
+        }
+        .score-pill .score-source {
+            color: inherit;
+            opacity: 0.8;
+        }
+
+        .version-badge {
+            font-size: 10px;
+            padding: 1px 5px;
+            border-radius: 3px;
+            background: rgba(0,0,0,0.1);
+            margin-left: 4px;
+        }
+        .version-badge.v4 {
+            background: #0066CC;
+            color: white;
+        }
+
+        /* Score stack (vertical layout) */
+        .score-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        /* Donut chart placeholder */
+        .donut-chart {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: conic-gradient(
+                #C9190B 0deg 36deg,
+                #EC7A08 36deg 108deg,
+                #F0AB00 108deg 216deg,
+                #0066CC 216deg 288deg,
+                #3E8635 288deg 360deg
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .donut-chart::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: white;
+            border-radius: 50%;
+        }
+        .donut-center {
+            position: absolute;
+            z-index: 1;
+            text-align: center;
+        }
+        .donut-count {
+            font-size: 28px;
+            font-weight: 700;
+        }
+        .donut-label {
+            font-size: 12px;
+            color: #6A6E73;
+        }
+
+        /* Summary bar */
+        .summary-bar {
+            display: flex;
+            gap: 24px;
+            padding: 16px;
+            background: #FAFAFA;
+            border-radius: 6px;
+            margin-bottom: 24px;
+        }
+        .summary-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .summary-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .summary-dot.critical { background: #C9190B; }
+        .summary-dot.high { background: #EC7A08; }
+        .summary-dot.medium { background: #F0AB00; }
+        .summary-dot.low { background: #0066CC; }
+        .summary-dot.none { background: #3E8635; }
+
+        .design-note {
+            background: #E7F1FA;
+            border-left: 4px solid #0066CC;
+            padding: 12px 16px;
+            margin-top: 16px;
+            font-size: 14px;
+        }
+
+        /* Expandable row */
+        .expandable-content {
+            background: #FAFAFA;
+            padding: 16px;
+            border-top: 1px solid #F0F0F0;
+        }
+
+        .affected-packages {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .package-tag {
+            background: #E7F1FA;
+            color: #0066CC;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="mockup-container">
+        <div class="mockup-title">
+            <h1>SBOM Vulnerabilities - Multi-Score Display Mockup</h1>
+            <p class="pf-v5-u-color-200">Enhanced display showing scores from multiple advisories per vulnerability</p>
+        </div>
+
+        <!-- SBOM Header -->
+        <div class="mockup-section">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div>
+                    <h2 class="pf-v5-c-title pf-m-xl" style="margin-bottom: 8px;">quarkus-bom-3.2.9.Final</h2>
+                    <p style="color: #6A6E73;">Red Hat build of Quarkus 3.2.9</p>
+                </div>
+                <div style="display: flex; gap: 24px; align-items: center;">
+                    <div class="donut-chart">
+                        <div class="donut-center">
+                            <div class="donut-count">47</div>
+                            <div class="donut-label">Total</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="summary-item" style="margin-bottom: 8px;">
+                            <span class="summary-dot critical"></span>
+                            <span>2 Critical</span>
+                        </div>
+                        <div class="summary-item" style="margin-bottom: 8px;">
+                            <span class="summary-dot high"></span>
+                            <span>8 High</span>
+                        </div>
+                        <div class="summary-item" style="margin-bottom: 8px;">
+                            <span class="summary-dot medium"></span>
+                            <span>15 Medium</span>
+                        </div>
+                        <div class="summary-item" style="margin-bottom: 8px;">
+                            <span class="summary-dot low"></span>
+                            <span>12 Low</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-dot none"></span>
+                            <span>10 None/Unknown</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vulnerabilities Table with Multi-Source Scores -->
+        <div class="mockup-section">
+            <h2 class="pf-v5-c-title pf-m-lg" style="margin-bottom: 16px;">Vulnerabilities</h2>
+
+            <!-- Filters -->
+            <div style="display: flex; gap: 16px; margin-bottom: 16px;">
+                <select class="pf-v5-c-form-control" style="width: 200px;">
+                    <option>All Severities</option>
+                    <option>Critical</option>
+                    <option>High</option>
+                    <option>Medium</option>
+                    <option>Low</option>
+                </select>
+                <select class="pf-v5-c-form-control" style="width: 200px;">
+                    <option>All Sources</option>
+                    <option>Red Hat</option>
+                    <option>CVE Record</option>
+                    <option>NVD</option>
+                </select>
+            </div>
+
+            <table class="pf-v5-c-table pf-m-grid-md" role="grid">
+                <thead class="pf-v5-c-table__thead">
+                    <tr class="pf-v5-c-table__tr" role="row">
+                        <th class="pf-v5-c-table__th" style="width: 30px;"></th>
+                        <th class="pf-v5-c-table__th" role="columnheader">Vulnerability</th>
+                        <th class="pf-v5-c-table__th" role="columnheader">Description</th>
+                        <th class="pf-v5-c-table__th" role="columnheader" style="width: 320px;">CVSS Scores</th>
+                        <th class="pf-v5-c-table__th" role="columnheader">Packages</th>
+                    </tr>
+                </thead>
+                <tbody class="pf-v5-c-table__tbody">
+                    <!-- Row 1: Multiple scores, different severities -->
+                    <tr class="pf-v5-c-table__tr" role="row">
+                        <td class="pf-v5-c-table__td">
+                            <button class="pf-v5-c-button pf-m-plain" aria-label="Expand">
+                                <span style="font-size: 12px;">&#9660;</span>
+                            </button>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <a href="#" style="font-weight: 600;">CVE-2023-1436</a>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell" style="color: #6A6E73;">
+                            Infinite loop in Jettison JSON parser
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <div class="score-stack">
+                                <span class="score-pill high">
+                                    7.5 High
+                                    <span class="version-badge">v3.1</span>
+                                    <span class="score-source">Red Hat</span>
+                                </span>
+                                <span class="score-pill medium">
+                                    5.9 Medium
+                                    <span class="version-badge">v3.1</span>
+                                    <span class="score-source">CVE Record</span>
+                                </span>
+                            </div>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <span class="pf-v5-c-badge pf-m-read">3</span>
+                        </td>
+                    </tr>
+
+                    <!-- Row 2: Critical with v4.0 -->
+                    <tr class="pf-v5-c-table__tr" role="row">
+                        <td class="pf-v5-c-table__td">
+                            <button class="pf-v5-c-button pf-m-plain" aria-label="Expand">
+                                <span style="font-size: 12px;">&#9654;</span>
+                            </button>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <a href="#" style="font-weight: 600;">CVE-2024-0567</a>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell" style="color: #6A6E73;">
+                            Remote code execution in commons-text
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <div class="score-stack">
+                                <span class="score-pill critical">
+                                    9.8 Critical
+                                    <span class="version-badge v4">v4.0</span>
+                                    <span class="score-source">Red Hat</span>
+                                </span>
+                                <span class="score-pill critical">
+                                    9.6 Critical
+                                    <span class="version-badge">v3.1</span>
+                                    <span class="score-source">NVD</span>
+                                </span>
+                            </div>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <span class="pf-v5-c-badge pf-m-read">1</span>
+                        </td>
+                    </tr>
+
+                    <!-- Row 3: Single score (no variance) -->
+                    <tr class="pf-v5-c-table__tr" role="row">
+                        <td class="pf-v5-c-table__td">
+                            <button class="pf-v5-c-button pf-m-plain" aria-label="Expand">
+                                <span style="font-size: 12px;">&#9654;</span>
+                            </button>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <a href="#" style="font-weight: 600;">CVE-2023-1108</a>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell" style="color: #6A6E73;">
+                            HTTP request smuggling in Undertow
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <span class="score-pill high">
+                                7.5 High
+                                <span class="version-badge">v3.1</span>
+                                <span class="score-source">Red Hat</span>
+                            </span>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <span class="pf-v5-c-badge pf-m-read">2</span>
+                        </td>
+                    </tr>
+
+                    <!-- Row 4: Multiple vendors -->
+                    <tr class="pf-v5-c-table__tr" role="row">
+                        <td class="pf-v5-c-table__td">
+                            <button class="pf-v5-c-button pf-m-plain" aria-label="Expand">
+                                <span style="font-size: 12px;">&#9654;</span>
+                            </button>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <a href="#" style="font-weight: 600;">CVE-2023-2976</a>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell" style="color: #6A6E73;">
+                            Guava temporary directory vulnerability
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <div class="score-stack">
+                                <span class="score-pill medium">
+                                    5.5 Medium
+                                    <span class="version-badge">v3.1</span>
+                                    <span class="score-source">CVE Record</span>
+                                </span>
+                                <span class="score-pill medium">
+                                    4.4 Medium
+                                    <span class="version-badge">v3.1</span>
+                                    <span class="score-source">Red Hat</span>
+                                </span>
+                            </div>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <span class="pf-v5-c-badge pf-m-read">5</span>
+                        </td>
+                    </tr>
+
+                    <!-- Row 5: Low severity -->
+                    <tr class="pf-v5-c-table__tr" role="row">
+                        <td class="pf-v5-c-table__td">
+                            <button class="pf-v5-c-button pf-m-plain" aria-label="Expand">
+                                <span style="font-size: 12px;">&#9654;</span>
+                            </button>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <a href="#" style="font-weight: 600;">CVE-2023-0482</a>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell" style="color: #6A6E73;">
+                            RESTEasy information disclosure
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <span class="score-pill low">
+                                3.3 Low
+                                <span class="version-badge">v3.1</span>
+                                <span class="score-source">Red Hat</span>
+                            </span>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <span class="pf-v5-c-badge pf-m-read">1</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Expanded Row Example -->
+            <div class="expandable-content">
+                <p style="font-size: 14px; font-weight: 600; margin-bottom: 12px;">Affected Packages (CVE-2023-1436)</p>
+                <div class="affected-packages">
+                    <span class="package-tag">pkg:maven/org.codehaus.jettison/jettison@1.5.3</span>
+                    <span class="package-tag">pkg:maven/org.codehaus.jettison/jettison@1.5.2</span>
+                    <span class="package-tag">pkg:maven/org.codehaus.jettison/jettison@1.4.1</span>
+                </div>
+            </div>
+
+            <div class="design-note">
+                <strong>Design Notes:</strong>
+                <ul>
+                    <li>Each vulnerability shows ALL scores from different advisories</li>
+                    <li>Scores are sorted by: CVSS version (v4.0 first) then by score (highest first)</li>
+                    <li>CVSS v4.0 badge is highlighted in blue to stand out</li>
+                    <li>Source name shown inline with each score</li>
+                    <li>Expandable rows show affected packages</li>
+                    <li>This is similar to current analyze page but with version badges added</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Alternative: Compact View -->
+        <div class="mockup-section">
+            <h2 class="pf-v5-c-title pf-m-lg" style="margin-bottom: 16px;">Alternative: Compact Primary-Only View</h2>
+            <p style="color: #6A6E73; margin-bottom: 16px;">For when space is limited, show only primary score with expand option</p>
+
+            <table class="pf-v5-c-table pf-m-grid-md" role="grid">
+                <thead class="pf-v5-c-table__thead">
+                    <tr class="pf-v5-c-table__tr" role="row">
+                        <th class="pf-v5-c-table__th" role="columnheader">Vulnerability</th>
+                        <th class="pf-v5-c-table__th" role="columnheader">CVSS</th>
+                        <th class="pf-v5-c-table__th" role="columnheader">Source</th>
+                        <th class="pf-v5-c-table__th" role="columnheader">Others</th>
+                    </tr>
+                </thead>
+                <tbody class="pf-v5-c-table__tbody">
+                    <tr class="pf-v5-c-table__tr" role="row">
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <a href="#">CVE-2023-1436</a>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <span class="score-pill high">7.5 High <span class="version-badge">v3.1</span></span>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">Red Hat</td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <button class="pf-v5-c-button pf-m-link pf-m-small">
+                                +1 more
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="pf-v5-c-table__tr" role="row">
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <a href="#">CVE-2024-0567</a>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <span class="score-pill critical">9.8 Critical <span class="version-badge v4">v4.0</span></span>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">Red Hat</td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <button class="pf-v5-c-button pf-m-link pf-m-small">
+                                +1 more
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="pf-v5-c-table__tr" role="row">
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <a href="#">CVE-2023-1108</a>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <span class="score-pill high">7.5 High <span class="version-badge">v3.1</span></span>
+                        </td>
+                        <td class="pf-v5-c-table__td" role="cell">Red Hat</td>
+                        <td class="pf-v5-c-table__td" role="cell">
+                            <span style="color: #6A6E73;">-</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="design-note">
+                <strong>Design Notes:</strong>
+                <ul>
+                    <li>Shows only the primary score in main view</li>
+                    <li>"+N more" link opens popover/modal with all scores</li>
+                    <li>Good for narrow screens or when table has many columns</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

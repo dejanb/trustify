@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trustify CVSS UX Mockups</title>
+    <link rel="stylesheet" href="https://unpkg.com/@patternfly/patternfly@5.0.0/patternfly.min.css">
+    <style>
+        body {
+            background-color: var(--pf-v5-global--BackgroundColor--200);
+            padding: 48px 24px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+        .header h1 {
+            margin-bottom: 16px;
+        }
+        .header p {
+            color: #6A6E73;
+            font-size: 18px;
+        }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+            transition: box-shadow 0.2s, transform 0.2s;
+        }
+        .card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+        }
+        .card h3 {
+            margin-bottom: 12px;
+            color: #151515;
+        }
+        .card p {
+            color: #6A6E73;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+        .card a {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #0066CC;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .card a:hover {
+            text-decoration: underline;
+        }
+        .features {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 16px 0;
+        }
+        .features li {
+            padding: 4px 0;
+            font-size: 13px;
+            color: #6A6E73;
+        }
+        .features li::before {
+            content: "✓ ";
+            color: #3E8635;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid #D2D2D2;
+            color: #6A6E73;
+            font-size: 14px;
+        }
+        .footer a {
+            color: #0066CC;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Trustify CVSS UX Mockups</h1>
+            <p>PatternFly-based mockups for improved vulnerability score display</p>
+        </div>
+
+        <div class="card-grid">
+            <div class="card">
+                <h3>Vulnerability List</h3>
+                <p>Table view showing primary scores with variance indicators for list pages.</p>
+                <ul class="features">
+                    <li>Primary score with hover tooltip</li>
+                    <li>Variance indicator when sources differ</li>
+                    <li>CVSS version badges</li>
+                    <li>Option A vs Option C comparison</li>
+                </ul>
+                <a href="vulnerability-list.html">View Mockup →</a>
+            </div>
+
+            <div class="card">
+                <h3>Vulnerability Details</h3>
+                <p>Detail page with side-by-side score comparison from multiple sources.</p>
+                <ul class="features">
+                    <li>Score comparison cards</li>
+                    <li>CVSS version tabs</li>
+                    <li>Vector metric comparison table</li>
+                    <li>Multiple vendor example</li>
+                </ul>
+                <a href="vulnerability-details.html">View Mockup →</a>
+            </div>
+
+            <div class="card">
+                <h3>SBOM Vulnerabilities</h3>
+                <p>Enhanced SBOM vulnerability view with multi-source scores per CVE.</p>
+                <ul class="features">
+                    <li>Severity donut chart</li>
+                    <li>All scores shown inline</li>
+                    <li>CVSS v4.0 highlighting</li>
+                    <li>Compact view alternative</li>
+                </ul>
+                <a href="sbom-vulnerabilities.html">View Mockup →</a>
+            </div>
+
+            <div class="card">
+                <h3>Advisory List</h3>
+                <p>Table view of advisories with vulnerability count and severity breakdown.</p>
+                <ul class="features">
+                    <li>Vulnerability count gallery</li>
+                    <li>CVSS-derived severity chips</li>
+                    <li>Source labels (Red Hat, CVE, GitHub)</li>
+                    <li>Stats overview by source</li>
+                </ul>
+                <a href="advisory-list.html">View Mockup →</a>
+            </div>
+
+            <div class="card">
+                <h3>Advisory Details</h3>
+                <p>Advisory detail page showing vulnerabilities with this advisory's scores.</p>
+                <ul class="features">
+                    <li>Advisory metadata header</li>
+                    <li>Score comparison vs CVE Record</li>
+                    <li>Delta indicators (+/-)</li>
+                    <li>CVSS version badges</li>
+                </ul>
+                <a href="advisory-details.html">View Mockup →</a>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>
+                These mockups accompany the
+                <a href="../cvss-ux-proposal.md">CVSS UX Proposal document</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
