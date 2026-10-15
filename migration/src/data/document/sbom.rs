@@ -1,11 +1,11 @@
 use super::Document;
 use bytes::Bytes;
+use cyclonedx_rs::cyclonedx::v_1_7::CycloneDx;
 use sea_orm::{
     FromQueryResult, QueryFilter, QuerySelect,
     prelude::*,
     sea_query::{Expr, extension::postgres::PgExpr},
 };
-use serde_cyclonedx::cyclonedx::v_1_6::CycloneDx;
 use trustify_entity::{labels::Labels, sbom};
 use trustify_module_storage::service::StorageBackend;
 

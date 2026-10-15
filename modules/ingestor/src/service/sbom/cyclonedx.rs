@@ -3,8 +3,8 @@ use crate::{
     model::IngestResult,
     service::{Error, JsonSource, Warnings},
 };
+use cyclonedx_rs::cyclonedx::v_1_7::{Component, CycloneDx};
 use sea_orm::{ConnectionTrait, TransactionTrait};
-use serde_cyclonedx::cyclonedx::v_1_6::{Component, CycloneDx};
 use std::str::FromStr;
 use tracing::instrument;
 use trustify_common::hashing::Digests;
